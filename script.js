@@ -14,40 +14,17 @@
 // DOM Element References
 // ============================================
 
-/** @type {HTMLElement} */
 const quoteText = document.getElementById("quoteText");
-
-/** @type {HTMLElement} */
 const quoteAuthor = document.getElementById("quoteAuthor");
-
-/** @type {HTMLElement} */
 const quoteCard = document.getElementById("quoteCard");
-
-/** @type {HTMLButtonElement} */
 const newQuoteBtn = document.getElementById("newQuoteBtn");
-
-/** @type {HTMLButtonElement} */
 const copyBtn = document.getElementById("copyBtn");
-
-/** @type {HTMLButtonElement} */
 const favoriteBtn = document.getElementById("favoriteBtn");
-
-/** @type {HTMLElement} */
 const favoritesList = document.getElementById("favoritesList");
-
-/** @type {HTMLElement} */
 const favoritesSection = document.getElementById("favoritesSection");
-
-/** @type {HTMLElement} */
 const favCount = document.getElementById("favCount");
-
-/** @type {HTMLElement} */
 const quoteCount = document.getElementById("quoteCount");
-
-/** @type {HTMLElement} */
 const toast = document.getElementById("toast");
-
-/** @type {NodeList} */
 const categoryButtons = document.querySelectorAll(".category-btn");
 
 // ============================================
@@ -55,13 +32,13 @@ const categoryButtons = document.querySelectorAll(".category-btn");
 // ============================================
 
 /** Currently active category filter */
-let currentCategory: string = "all";
+let currentCategory = "all";
 
 /** Currently displayed quote */
-let currentQuote: Quote | null = null;
+let currentQuote = null;
 
 /** Array of favorited quotes loaded from localStorage */
-let favorites: Quote[] = [];
+let favorites = [];
 
 // ============================================
 // Initialization
@@ -71,7 +48,7 @@ let favorites: Quote[] = [];
  * Initialize the application on page load.
  * Loads favorites, displays quote count, and shows first quote.
  */
-function init(): void {
+function init() {
     loadFavorites();
     updateQuoteCount();
     displayRandomQuote();
@@ -84,9 +61,9 @@ function init(): void {
 
 /**
  * Get filtered quotes based on current category selection.
- * @returns {Quote[]} Array of quotes matching the current filter
+ * @returns {Array} Array of quotes matching the current filter
  */
-function getFilteredQuotes(): Quote[] {
+function getFilteredQuotes() {
     if (currentCategory === "all") {
         return quotes;
     }
@@ -97,7 +74,7 @@ function getFilteredQuotes(): Quote[] {
  * Select and display a random quote from the filtered list.
  * Ensures the same quote isn't shown twice in a row.
  */
-function displayRandomQuote(): void {
+function displayRandomQuote() {
     const filteredQuotes = getFilteredQuotes();
 
     if (filteredQuotes.length === 0) {
@@ -107,7 +84,7 @@ function displayRandomQuote(): void {
     }
 
     // Avoid showing the same quote consecutively
-    let newQuote: Quote;
+    let newQuote;
     do {
         const randomIndex = Math.floor(Math.random() * filteredQuotes.length);
         newQuote = filteredQuotes[randomIndex];
@@ -137,7 +114,7 @@ function displayRandomQuote(): void {
 /**
  * Update the displayed total quote count.
  */
-function updateQuoteCount(): void {
+function updateQuoteCount() {
     quoteCount.textContent = quotes.length.toString();
 }
 
@@ -149,8 +126,8 @@ function updateQuoteCount(): void {
  * Handle category button click to filter quotes.
  * @param {Event} event - Click event from category button
  */
-function handleCategoryClick(event: Event): void {
-    const button = event.target as HTMLButtonElement;
+function handleCategoryClick(event) {
+    const button = event.target;
     const category = button.dataset.category;
 
     if (!category) return;
@@ -171,7 +148,7 @@ function handleCategoryClick(event: Event): void {
 /**
  * Load favorites from localStorage.
  */
-function loadFavorites(): void {
+function loadFavorites() {
     try {
         const stored = localStorage.getItem("dailyInspiration_favorites");
         favorites = stored ? JSON.parse(stored) : [];
@@ -185,7 +162,7 @@ function loadFavorites(): void {
 /**
  * Save current favorites array to localStorage.
  */
-function saveFavorites(): void {
+function saveFavorites() {
     try {
         localStorage.setItem(
             "dailyInspiration_favorites",
@@ -200,11 +177,11 @@ function saveFavorites(): void {
 /**
  * Toggle the current quote's favorite status.
  */
-function toggleFavorite(): void {
+function toggleFavorite() {
     if (!currentQuote) return;
 
     const existingIndex = favorites.findIndex(
-        (fav) => fav.text === currentQuote!.text
+        (fav) => fav.text === currentQuote.text
     );
 
     if (existingIndex > -1) {
@@ -226,7 +203,7 @@ function toggleFavorite(): void {
  * Remove a quote from favorites by index.
  * @param {number} index - Index of the favorite to remove
  */
-function removeFavorite(index: number): void {
+function removeFavorite(index) {
     favorites.splice(index, 1);
     saveFavorites();
     renderFavorites();
@@ -237,7 +214,7 @@ function removeFavorite(index: number): void {
 /**
  * Render the favorites list in the DOM.
  */
-function renderFavorites(): void {
+function renderFavorites() {
     // Update count
     favCount.textContent = `(${favorites.length})`;
 
@@ -266,9 +243,7 @@ function renderFavorites(): void {
     // Add event listeners to remove buttons
     document.querySelectorAll(".favorite-remove").forEach((btn) => {
         btn.addEventListener("click", (e) => {
-            const index = parseInt(
-                (e.target as HTMLElement).dataset.index || "0"
-            );
+            const index = parseInt(e.target.dataset.index || "0");
             removeFavorite(index);
         });
     });
@@ -277,11 +252,11 @@ function renderFavorites(): void {
 /**
  * Update the favorite button appearance based on current quote status.
  */
-function updateFavoriteButton(): void {
+function updateFavoriteButton() {
     if (!currentQuote) return;
 
     const isFavorited = favorites.some(
-        (fav) => fav.text === currentQuote!.text
+        (fav) => fav.text === currentQuote.text
     );
 
     favoriteBtn.textContent = isFavorited ? "❤️" : "🤍";
@@ -295,7 +270,7 @@ function updateFavoriteButton(): void {
 /**
  * Copy the current quote to the clipboard.
  */
-async function copyQuote(): Promise<void> {
+async function copyQuote() {
     if (!currentQuote) return;
 
     const textToCopy = `"${currentQuote.text}" — ${currentQuote.author}`;
@@ -319,14 +294,13 @@ async function copyQuote(): Promise<void> {
 // Toast Notification
 // ============================================
 
-/** @type {number|null} */
-let toastTimeout: number | null = null;
+let toastTimeout = null;
 
 /**
  * Display a toast notification message.
  * @param {string} message - Message to display
  */
-function showToast(message: string): void {
+function showToast(message) {
     // Clear existing timeout
     if (toastTimeout) {
         clearTimeout(toastTimeout);
@@ -348,7 +322,7 @@ function showToast(message: string): void {
 /**
  * Set up all event listeners for the application.
  */
-function setupEventListeners(): void {
+function setupEventListeners() {
     // New quote button
     newQuoteBtn.addEventListener("click", displayRandomQuote);
 
