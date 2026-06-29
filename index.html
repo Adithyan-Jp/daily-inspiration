@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Inspiration Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="logo">✨ Daily Inspiration</h1>
+            <p class="tagline">Fuel your day with wisdom</p>
+        </header>
+
+        <!-- Category Filter -->
+        <nav class="categories">
+            <button class="category-btn active" data-category="all">All</button>
+            <button class="category-btn" data-category="motivation">🔥 Motivation</button>
+            <button class="category-btn" data-category="success">🏆 Success</button>
+            <button class="category-btn" data-category="life">🌱 Life</button>
+            <button class="category-btn" data-category="wisdom">🦉 Wisdom</button>
+            <button class="category-btn" data-category="creativity">🎨 Creativity</button>
+        </nav>
+
+        <!-- Quote Card -->
+        <main class="quote-card" id="quoteCard">
+            <div class="quote-icon">"</div>
+            <blockquote class="quote-text" id="quoteText">
+                Click the button below to discover your inspiration...
+            </blockquote>
+            <cite class="quote-author" id="quoteAuthor"></cite>
+
+            <!-- Action Buttons -->
+            <div class="actions">
+                <button class="btn btn-primary" id="newQuoteBtn">
+                    <span class="btn-icon">🎲</span> New Quote
+                </button>
+                <button class="btn btn-secondary" id="copyBtn" title="Copy quote">
+                    📋
+                </button>
+                <button class="btn btn-secondary" id="favoriteBtn" title="Add to favorites">
+                    🤍
+                </button>
+            </div>
+        </main>
+
+        <!-- Favorites Section -->
+        <section class="favorites-section" id="favoritesSection">
+            <h2 class="section-title">💖 Your Favorites <span id="favCount">(0)</span></h2>
+            <div class="favorites-list" id="favoritesList">
+                <p class="empty-state">No favorites yet. Start collecting inspiration!</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Made with ❤️ | <span id="quoteCount">0</span> quotes to explore</p>
+        </footer>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script src="quotes.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
